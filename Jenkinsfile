@@ -10,14 +10,14 @@ node {
     def SFDC_HOST = env.SFDC_HOST_DH
     def JWT_KEY_CRED_ID = env.JWT_CRED_ID_DH
     def CONNECTED_APP_CONSUMER_KEY=env.CONNECTED_APP_CONSUMER_KEY_DH
-
+println 'SECOND' 
     println 'KEY IS' 
     println JWT_KEY_CRED_ID
     println HUB_ORG
     println SFDC_HOST
     println CONNECTED_APP_CONSUMER_KEY
     def toolbelt = tool 'sfdx'
-
+println 'SECOND' 
     stage('checkout source') {
         // when running in multi-branch job, one must issue this command
         checkout scm
