@@ -21,7 +21,7 @@ node {
     
 
     withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'jwt_key_file')]) {
-    println 'FIRST' 
+    println jwt_key_file 
         stage('Deploye Code') {
             if (isUnix()) {
 		    
