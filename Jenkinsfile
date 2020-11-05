@@ -22,14 +22,16 @@ node {
 
     withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'jwt_key_file')]) {
     println 'FIRST' 
+	     rc = bat returnStatus: true, script: "echo \"Hello World!!\""
+	    println rc
         stage('Deploye Code') {
             if (isUnix()) {
+		    
                 rc = sh returnStatus: true, script: "sfdx force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultusername --instanceurl ${SFDC_HOST}"
             }else{
-                 rc = bat returnStatus: true, script: "sfdx force:auth:jwt:grant --clientid ${CONNECTED_APP_CONSUMER_KEY} --username ${HUB_ORG} --jwtkeyfile ${jwt_key_file} --setdefaultusername --instanceurl ${SFDC_HOST}"
+                 rc = bat returnStatus: true, script: "sfdx force:auth:jwt:grant -auth:jwt:grant --clientid 3MVG9d8..z.hDcPKztkdDe_wTJPooh0gGplHhOJW6AHyKkWpHy3zqhwKrvJR3eJRQjuydD3p14Ktzc1QV3Kwy --jwtkeyfile server.key --username kapiton182@gmail.com --instanceurl https://login.salesforce.com --setdefaultusername"
             }
-            
-
+           
 			println rc
 			
 			if (isUnix()) {
