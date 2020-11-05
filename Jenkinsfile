@@ -22,8 +22,6 @@ node {
 
     withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'jwt_key_file')]) {
     println 'FIRST' 
-	     rc = bat returnStatus: true, script: "echo \"Hello World!!\""
-	    println rc
         stage('Deploye Code') {
             if (isUnix()) {
 		    
