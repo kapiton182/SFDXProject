@@ -1,0 +1,1 @@
+echo sfdx force:org:display -u kapiton182@gmail.com
