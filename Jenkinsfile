@@ -20,6 +20,7 @@ node {
     println CONNECTED_APP_CONSUMER_KEY
 	println FORCE_ORG_URL
     println  env.JENKINS_HOME
+    println env.BRANCH_NAME
 
      def deployBranchURL = ""
         if("${env.BRANCH_NAME}".contains("/")) {
@@ -28,7 +29,7 @@ node {
         else {
             deployBranchURL = "${env.BRANCH_NAME}"
         }
-        def DEPLOYDIR="/var/lib/jenkins/workspace/parambuild_${deployBranchURL}/github-checkout/force-app/main/default"
+        def DEPLOYDIR="/var/lib/jenkins/workspace/parambuild_${env.BRANCH_NAME}/github-checkout/force-app/main/default"
         echo DEPLOYDIR
     
 
@@ -37,15 +38,17 @@ node {
         stage('Deploye Code') {
             if (isUnix()) {
 		    
-                rc = sh returnStatus: true, script: "sfdx force:auth:sfdxurl:store -f ${jwt_key_file} -a ${HUB_ORG}"
+                rc = sh returnStatus: true, script: "sfdx force:auth:jwt:grant -auth:jwt:grant --clientid 3MVG9d8..z.hDcPKztkdDe_wTJPooh0gGplHhOJW6AHyKkWpHy3zqhwKrvJR3eJRQjuydD3p14Ktzc1QV3Kwy --jwtkeyfile /home/dima/Documents/server.key --username kapiton182@gmail.com --instanceurl https://login.salesforce.com --setdefaultusername"
             }else{
                  rc = bat returnStatus: true, script: "sfdx force:auth:jwt:grant -auth:jwt:grant --clientid 3MVG9d8..z.hDcPKztkdDe_wTJPooh0gGplHhOJW6AHyKkWpHy3zqhwKrvJR3eJRQjuydD3p14Ktzc1QV3Kwy --jwtkeyfile server.key --username kapiton182@gmail.com --instanceurl https://login.salesforce.com --setdefaultusername"
             }
            
 			println rc
 			
+				rmsg = sh returnStdout: true, script: "sfdx force:mdapi:deploy -d /var/lib/jenkins/workspace/shit_@script/force-app/main/default -u ${HUB_ORG}"
 			if (isUnix()) {
 				rmsg = sh returnStdout: true, script: "sfdx force:mdapi:deploy -d ${DEPLOYDIR} -u ${HUB_ORG}"
+				rmsg = sh returnStdout: true, script: "sfdx force:mdapi:deploy -d /var/lib/jenkins/workspace/shit_@script/force-app/main/default -u ${HUB_ORG}"
 			}else{
 			   rmsg = bat returnStdout: true, script: "sfdx force:mdapi:deploy -d force-app/main/default -u ${HUB_ORG}"
 			}
