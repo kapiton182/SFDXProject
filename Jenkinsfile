@@ -18,10 +18,10 @@ println 'SECOND'
     println CONNECTED_APP_CONSUMER_KEY
     def toolbelt = tool 'sfdx'
 println 'SECOND' 
-    stage('checkout source') {
+    //stage('checkout source') {
         // when running in multi-branch job, one must issue this command
-        checkout scm
-    }
+        //checkout scm
+    //}
     println 'SECOND' 
 
     withCredentials([file(credentialsId: JWT_KEY_CRED_ID, variable: 'jwt_key_file')]) {
