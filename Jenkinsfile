@@ -19,7 +19,17 @@ node {
     println SFDC_HOST
     println CONNECTED_APP_CONSUMER_KEY
 	println FORCE_ORG_URL
-    println  $JENKINS_HOME
+    println  env.JENKINS_HOME
+
+     def deployBranchURL = ""
+        if("${env.BRANCH_NAME}".contains("/")) {
+            deployBranchURL = "${env.BRANCH_NAME}".replace("/", "_")
+        }
+        else {
+            deployBranchURL = "${env.BRANCH_NAME}"
+        }
+        def DEPLOYDIR="/var/lib/jenkins/workspace/parambuild_${deployBranchURL}/github-checkout/force-app/main/default"
+        echo DEPLOYDIR
     
 
     withCredentials([file(credentialsId: FORCE_ORG_URL, variable: 'jwt_key_file')]) {
@@ -27,7 +37,7 @@ node {
         stage('Deploye Code') {
             if (isUnix()) {
 		    
-                rc = sh returnStatus: true, script: "sfdx force:auth:sfdxurl:store -f ${jwt_key_file}"
+                rc = sh returnStatus: true, script: "sfdx force:auth:sfdxurl:store -f ${jwt_key_file} -a ${HUB_ORG}"
             }else{
                  rc = bat returnStatus: true, script: "sfdx force:auth:jwt:grant -auth:jwt:grant --clientid 3MVG9d8..z.hDcPKztkdDe_wTJPooh0gGplHhOJW6AHyKkWpHy3zqhwKrvJR3eJRQjuydD3p14Ktzc1QV3Kwy --jwtkeyfile server.key --username kapiton182@gmail.com --instanceurl https://login.salesforce.com --setdefaultusername"
             }
@@ -35,7 +45,7 @@ node {
 			println rc
 			
 			if (isUnix()) {
-				rmsg = sh returnStdout: true, script: "sfdx force:mdapi:deploy -d ${JENKINS_HOME}/force-app/main/default  -u ${HUB_ORG}"
+				rmsg = sh returnStdout: true, script: "sfdx force:mdapi:deploy -d ${DEPLOYDIR} -u ${HUB_ORG}"
 			}else{
 			   rmsg = bat returnStdout: true, script: "sfdx force:mdapi:deploy -d force-app/main/default -u ${HUB_ORG}"
 			}
