@@ -19,7 +19,7 @@ node {
     println SFDC_HOST
     println CONNECTED_APP_CONSUMER_KEY
 	println FORCE_ORG_URL
-    println 'SECOND' 	
+    println  $JENKINS_HOME
     
 
     withCredentials([file(credentialsId: FORCE_ORG_URL, variable: 'jwt_key_file')]) {
@@ -35,9 +35,9 @@ node {
 			println rc
 			
 			if (isUnix()) {
-				rmsg = sh returnStdout: true, script: "sfdx force:mdapi:deploy -d force-app/main/default  -u ${HUB_ORG}"
+				rmsg = sh returnStdout: true, script: "sfdx force:mdapi:deploy -d ${JENKINS_HOME}/force-app/main/default  -u ${HUB_ORG}"
 			}else{
-			   rmsg = bat returnStdout: true, script: "sfdx force:mdapi:deploy -d force-app/main/default/. -u ${HUB_ORG}"
+			   rmsg = bat returnStdout: true, script: "sfdx force:mdapi:deploy -d force-app/main/default -u ${HUB_ORG}"
 			}
 			  
             printf rmsg
