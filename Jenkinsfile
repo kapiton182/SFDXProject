@@ -35,7 +35,7 @@ node {
 			println rc
 			
 			if (isUnix()) {
-				rmsg = sh returnStdout: true, script: "sfdx force:mdapi:deploy -d manifest/. -u ${HUB_ORG}"
+				rmsg = sh returnStdout: true, script: "sfdx force:source:deploy -p ./force-app/main/default  -u ${HUB_ORG}"
 			}else{
 			   rmsg = bat returnStdout: true, script: "sfdx force:mdapi:deploy -d manifest/. -u ${HUB_ORG}"
 			}
